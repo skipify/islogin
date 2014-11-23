@@ -11,14 +11,15 @@ module.exports = function(opts){
 	var url = opts.redirect || '/login';//login url
 	//批量设置方式
 	var pattern = opts.pattern || null;
-
 	if(Object.prototype.toString.call(opts.pattern) === '[object Array]')
 	{
-		return function(req,res.next){
+		return function(req,res,next){
 			var curl = req.originalUrl || req.url,
 				curls = curl.split('?'),
-				path  = curls.pop(),
-				ispass = false;
+				path  = curls.shift(),
+				match = false;
+					console.log(path);
+
 				if(!path){
 					next();
 				}
@@ -26,21 +27,23 @@ module.exports = function(opts){
 					var item = pattern[i];
 					if(Object.prototype.toString.call(item) === '[object RegExp]'){
 						if(item.test(path)){
-							ispass = true;
+							match = true;
 							break;
 						}
 					}else{
+						if(item.substr(0,1) != '/'){
+							item = '/' + item;
+						}
 						if(item === path){
-							ispass = true;
+							match = true;
 							break;
 						}
 					}
 				}
-
-				if(!ispass){
+				if(match && !req.logined && (!req.session || !req.session.logined)){
 					return res.redirect(url);
 				}
-				ispass = false;
+				match = false;
 				next();
 		}
 	} else{
@@ -50,7 +53,7 @@ module.exports = function(opts){
 		  	if(isback){
 		  		req.session.backUrl = req.originalUrl || req.url;
 		  	}
-		  	if(!req.logined && !req.session.logined) {
+		  	if(!req.logined && (!req.session || !req.session.logined)) {
 		  		return res.redirect(url);
 		  	}
 		    next();
