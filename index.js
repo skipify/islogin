@@ -13,8 +13,9 @@ module.exports = function(opts){
 	var pattern = opts.pattern || null;
 	if(Object.prototype.toString.call(opts.pattern) === '[object Array]')
 	{
+		req.session = req.session || {};
 		return function(req,res,next){
-			var curl = req.originalUrl || req.url,
+			var curl  = req.originalUrl || req.url,
 				curls = curl.split('?'),
 				path  = curls.shift(),
 				match = false;
@@ -40,7 +41,7 @@ module.exports = function(opts){
 						}
 					}
 				}
-				if(match && !req.logined && (!req.session || !req.session.logined)){
+				if(match && !req.logined && !req.session.logined){
 					return res.redirect(url);
 				}
 				match = false;
@@ -48,12 +49,12 @@ module.exports = function(opts){
 		}
 	} else{
 		return function(req,res,next){
-
-			var isback = opts.isback === undefined ? true : opts.isback; //是否需要返回原来的操作页面，默认为true
+			req.session = req.session || {};
+			var isback  = opts.isback === undefined ? true : opts.isback; //是否需要返回原来的操作页面，默认为true
 		  	if(isback){
 		  		req.session.backUrl = req.originalUrl || req.url;
 		  	}
-		  	if(!req.logined && (!req.session || !req.session.logined)) {
+		  	if(!req.logined && !req.session.logined) {
 		  		return res.redirect(url);
 		  	}
 		    next();
