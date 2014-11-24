@@ -1,0 +1,15 @@
+{
+  "name": "islogin",
+  "version": "0.0.3",
+  "description": "This is an Express middleware, is mainly used to check whether the user login",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "check login",
+    "express middleware"
+  ],
+  "author": "skipify",
+  "license": "MIT"
+}
