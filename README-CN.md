@@ -1,14 +1,17 @@
 islogin
 =======
 
-[English](https://github.com/skipify/islogin/blob/master/README.md)
+[English](https://github.com/skipify/islogin/blob/master/README.md)    
 
 这是一个Express的中间件，主要用于检查用户是否登陆
 
+# 安装
+	npm install islogin    
 # 使用方式
 	*注意系统内部默认使用 req.logined || req.session.logined 进行验证，如果需要自定义请使用自定义验证器*
 
-## app.js中使用，使用在路由开始之前，这里是批量设置所有的需要检查的URL名单，支持正则表达式
+## app.js中使用
+	使用在路由开始之前，这里是批量设置所有的需要检查的URL名单，支持正则表达式
 
 	app.use(islogin({pattern:[/\/test\/*?/,'/home/index','/user/add'],redirect:'/'}));
 
@@ -52,12 +55,12 @@ islogin
 
 ## object
 	可配置选项  
-	redirect string 跳转的URL，验证失败时跳转
-	tip      object/bool 适用于API型的跳转
-	pattern  array  需要验证的URL名单支持正则表达式
-	verify   function 自定义的验证器，内部默认验证为 req.logined || req.session.logined 表示通过
+	`redirect` string 跳转的URL，验证失败时跳转
+	`tip`      object/bool 适用于API型的跳转
+	`pattern`  array  需要验证的URL名单支持正则表达式
+	`verify`   function 自定义的验证器，内部默认验证为 req.logined || req.session.logined 表示通过
 			 如果需要自定义的验证器请自行书写 
-	isback   bool 是否保存当前访问的URL
+	`isback`   bool 是否保存当前访问的URL
 ## String
 	跳转的URL，传递string类型参数时仅适用于验证失败跳转且应该在路有文件中验证 同 redirect
 ## Boolean

@@ -1,12 +1,17 @@
 islogin
 =======
-[中文](https://github.com/skipify/islogin/blob/master/README-CN.md)
+[中文](https://github.com/skipify/islogin/blob/master/README-CN.md)    
+
 This is an Express middleware, is mainly used to check whether the user login
-
+# Install
+	npm install islogin    
 # Usage
-	*Notice: in the lib use req.logined || req.session.logined to verify,If you need to custom, please use a custom validator*  
+	*Notice: in the lib use req.logined || req.session.logined to verify,
+			If you need to custom, please use a custom validator*  
 
-## app.js,Use before the start of the route, here is the batch set all need to check the URL list, support for regular expressions
+## In app.js
+	
+	Use before the start of the route, here is the batch set all need to check the URL list, support for regular expressions
 
 
 	app.use(islogin({pattern:[/\/test\/*?/,'/home/index','/user/add'],redirect:'/'}));
@@ -42,16 +47,17 @@ This is an Express middleware, is mainly used to check whether the user login
 #OPTIONS
 ## object
 	options     
-	redirect string redirect url 
-	tip      object/bool for API-type
-	pattern  array  for checked URLs support for regular expressions
-	verify   function CustomValidator，in the lib return req.logined || req.session.logined for pass
+	`redirect` string redirect url 
+	`tip`      object/bool for API-type
+	`pattern`  array  for checked URLs support for regular expressions
+	`verify`   function CustomValidator，in the lib return req.logined || req.session.logined for pass
 			 you can define you own function to verify pass or not 
-	isback   bool if true(default)  you can use req.session.backUrl get this page url
+	`isback`   bool if true(default)  you can use req.session.backUrl get this page url
 
 
 ## string
-	Jump in the URL, passing type string arguments apply only when validation fails to jump and should have the file to verify the road (redirect)
+	Jump in the URL, passing type string arguments apply only when validation fails to jump 
+	and should have the file to verify the road (redirect)
 
 ## Boolean
 	API-TYPE tip，if false ,send {islogin:false} (tip => true/false)
