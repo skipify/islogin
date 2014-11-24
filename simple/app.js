@@ -1,3 +1,4 @@
+app.use(islogin(['/test/xx']));
 
 app.use(islogin({pattern:[/\/test\/*?/,],redirect:'/'}))
 

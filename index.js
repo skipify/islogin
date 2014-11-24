@@ -6,18 +6,37 @@
 
 module.exports = function(opts){
 
+	//for redirect url
 	if(typeof opts === 'string'){
 		opts = {redirect:opts};
 	}
+	//for is API-TIP
+	if(typeof opts === 'boolean')
+	{
+		opts = {tip:opts};
+	}
+	//for a Verify
+	if(typeof opts === 'function')
+	{
+		opts = {verify:opts};
+	}
+	//for a match pattern
+	if(Object.prototype.toString.call(opts) === '[object Array]')
+	{
+		opts = {pattern:opts};
+	}
+
 		opts = opts || {};
 	var url  = opts.redirect || '/login',//login url
-		tip  = opts.tip      || null; //json格式的提示
-	//批量设置方式
-	var pattern = opts.pattern || null;
+		tip  = opts.tip      || false,
+		pattern = opts.pattern || null;
+		verify = opts.verify || function(req,res){
+			return req.logined || req.session.logined;
+		}; //json tip
 	if(Object.prototype.toString.call(opts.pattern) === '[object Array]')
 	{
-		req.session = req.session || {};
 		return function(req,res,next){
+				req.session = req.session || {};
 			var curl  = req.originalUrl || req.url,
 				curls = curl.split('?'),
 				path  = curls.shift(),
@@ -44,7 +63,7 @@ module.exports = function(opts){
 						}
 					}
 				}
-				if(match && !req.logined && !req.session.logined){
+				if(match && !verify.call(null,req,res)){
 					if(tip){
 						if(Object.prototype.toString.call(tip) === '[object Object]'){
 							return res.json(tip);
@@ -60,11 +79,12 @@ module.exports = function(opts){
 	} else{
 		return function(req,res,next){
 			req.session = req.session || {};
-			var isback  = opts.isback === undefined ? true : opts.isback; //是否需要返回原来的操作页面，默认为true
+			var isback  = opts.isback === undefined ? true : opts.isback; // for back url？ default true
 		  	if(isback){
 		  		req.session.backUrl = req.originalUrl || req.url;
 		  	}
-		  	if(!req.logined && !req.session.logined) {
+		  	if(!verify.call(null,req,res)) {
+		  		console.log('xxx');
 		  		//json格式的提示，用于API
 				if(tip){
 					if(Object.prototype.toString.call(tip) === '[object Object]'){
