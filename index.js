@@ -4,8 +4,9 @@
 	Support two use methods and processing type
 */
 
-module.exports = function(opts){
+module.exports = function(opts,reject){
 
+	reject = reject || false;
 	//for redirect url
 	if(typeof opts === 'string'){
 		opts = {redirect:opts};
@@ -63,16 +64,34 @@ module.exports = function(opts){
 						}
 					}
 				}
-				if(match && !verify.call(null,req,res)){
-					if(tip){
-						if(Object.prototype.toString.call(tip) === '[object Object]'){
-							return res.json(tip);
-						}else{
-							return res.json({islogin:false});
+
+				if(!reject)
+				{
+					if(match && !verify.call(null,req,res)){
+						if(tip){
+							if(Object.prototype.toString.call(tip) === '[object Object]'){
+								return res.json(tip);
+							}else{
+								return res.json({islogin:false});
+							}
 						}
+						return res.redirect(url);
 					}
-					return res.redirect(url);
+				}else{
+					//reverse ,match for no valid
+					if(!match && !verify.call(null,req,res)){
+						if(tip){
+							if(Object.prototype.toString.call(tip) === '[object Object]'){
+								return res.json(tip);
+							}else{
+								return res.json({islogin:false});
+							}
+						}
+						return res.redirect(url);
+					}
 				}
+
+
 				match = false;
 				next();
 		}
