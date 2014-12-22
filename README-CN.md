@@ -52,6 +52,8 @@ islogin
 	})
 
 #OPTIONS
+islogin() 可以接受两个参数
+第一个参数：
 
 ## object
 	可配置选项  
@@ -71,3 +73,9 @@ islogin
 	直接指定一个需要验证的URL的匹配器 同pattern
 
 	* req.session.backUrl 可以获取原来的URL*
+
+第二个参数：
+默认为false,表示，匹配的URL内容需要经过验证，验证失败则跳往redirect的页面
+
+为true时表示，匹配的URL内容不需要经过验证，不匹配的需要验证，这种情况通常用于后台登陆仅仅只有登录页面不要验证
+			其他页面都需要，此时在app.js中设置 app.use(islogin({pattern:["/login"],redirect:"/login"},true));

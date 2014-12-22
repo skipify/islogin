@@ -45,6 +45,7 @@ This is an Express middleware, is mainly used to check whether the user login
 	})
 
 #OPTIONS
+The First Param:
 ## object
 	options     
 	`redirect` string redirect url 
@@ -67,3 +68,8 @@ This is an Express middleware, is mainly used to check whether the user login
 	for checked URLs support for regular expressions (pattern)
 
 	* req.session.backUrl get the url*
+
+The Second Param (default false)
+
+false : Match the URL must pass validation
+True :  Matching urls do not need to be verified,But don't match the URL must be verified.Its For Manage Sysyem,only one page or a little pages need verify;
