@@ -40,7 +40,6 @@ function check(url){
 	if(!pattern){
 		return false;
 	}
-	var ispass = false;
 	for(var i in pattern){
 		var item = pattern[i];
 		if(typeof item === 'string'){
@@ -54,5 +53,5 @@ function check(url){
 		}
 
 	}
-	return ispass;
+	return false;
 }
