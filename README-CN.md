@@ -79,3 +79,5 @@ islogin() 可以接受两个参数
 
 为true时表示，匹配的URL内容不需要经过验证，不匹配的需要验证，这种情况通常用于后台登陆仅仅只有登录页面不要验证
 			其他页面都需要，此时在app.js中设置 app.use(islogin({pattern:["/login"],redirect:"/login"},true));
+
+可以实现权限组的管理，参考 group.js实例
