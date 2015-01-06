@@ -61,7 +61,7 @@ islogin() 可以接受两个参数
 	`tip`      object/bool 适用于API型的跳转
 	`pattern`  array  需要验证的URL名单支持正则表达式
 	`verify`   function 自定义的验证器，内部默认验证为 req.logined || req.session.logined 表示通过
-			 如果需要自定义的验证器请自行书写 
+			 如果需要自定义的验证器请自行书写 ，再自定义的验证方法里面可以动态的改变 配置项中 tip redirect的值
 	`isback`   bool 是否保存当前访问的URL
 ## String
 	跳转的URL，传递string类型参数时仅适用于验证失败跳转且应该在路有文件中验证 同 redirect

@@ -28,12 +28,14 @@ module.exports = function(opts,reject){
 	}
 
 		opts = opts || {};
-	var url  = opts.redirect || '/login',//login url
-		tip  = opts.tip      || false,
-		pattern = opts.pattern || null;
-		verify = opts.verify || function(req,res){
+		opts.redirect   = opts.redirect || '/login',//login url
+		opts.tip        = opts.tip      || false;
+	var pattern = opts.pattern || null;
+		verify  = opts.verify  || function(req,res){
 			return req.logined || req.session.logined;
-		}; //json tip
+		},
+		this.opts = opts,
+		that      = this; //json tip
 	if(Object.prototype.toString.call(opts.pattern) === '[object Array]')
 	{
 		return function(req,res,next){
@@ -67,27 +69,27 @@ module.exports = function(opts,reject){
 
 				if(!reject)
 				{
-					if(match && !verify.call(null,req,res)){
-						if(tip){
-							if(Object.prototype.toString.call(tip) === '[object Object]'){
-								return res.json(tip);
+					if(match && !verify.call(that,req,res)){
+						if(opts.tip){
+							if(Object.prototype.toString.call(opts.tip) === '[object Object]'){
+								return res.json(opts.tip);
 							}else{
 								return res.json({islogin:false});
 							}
 						}
-						return res.redirect(url);
+						return res.redirect(opts.redirect);
 					}
 				}else{
 					//reverse ,match for no valid
-					if(!match && !verify.call(null,req,res)){
-						if(tip){
-							if(Object.prototype.toString.call(tip) === '[object Object]'){
-								return res.json(tip);
+					if(!match && !verify.call(that,req,res)){
+						if(opts.tip){
+							if(Object.prototype.toString.call(opts.tip) === '[object Object]'){
+								return res.json(opts.tip);
 							}else{
 								return res.json({islogin:false});
 							}
 						}
-						return res.redirect(url);
+						return res.redirect(opts.redirect);
 					}
 				}
 
@@ -102,18 +104,17 @@ module.exports = function(opts,reject){
 		  	if(isback){
 		  		req.session.backUrl = req.originalUrl || req.url;
 		  	}
-		  	if(!verify.call(null,req,res)) {
-		  		console.log('xxx');
+		  	if(!verify.call(that,req,res)) {
 		  		//json格式的提示，用于API
-				if(tip){
-					if(Object.prototype.toString.call(tip) === '[object Object]'){
-						return res.json(tip);
+				if(opts.tip){
+					if(Object.prototype.toString.call(opts.tip) === '[object Object]'){
+						return res.json(opts.tip);
 					}else{
 						return res.json({islogin:false});
 					}
 				}
 				//直接跳转
-		  		return res.redirect(url);
+		  		return res.redirect(opts.redirect);
 		  	}
 		    next();
 		}
