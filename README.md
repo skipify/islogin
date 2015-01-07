@@ -73,3 +73,5 @@ The Second Param (default false)
 
 false : Match the URL must pass validation
 True :  Matching urls do not need to be verified,But don't match the URL must be verified.Its For Manage Sysyem,only one page or a little pages need verify;
+
+Can realize management privilege groups, reference group.Js instance
